@@ -26,7 +26,7 @@
 https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 
 ## 功能
-
+```
 命令&功能：
 
 [打卡帮助] 查看帮助
@@ -42,7 +42,7 @@ https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 {自动打卡} 该功能无需命令，开启后每天14点15分自动完成
 
 [打卡用户列表] 看所有用户
-
+```
 ## 简单食用教程：
 
 可看下方链接：
