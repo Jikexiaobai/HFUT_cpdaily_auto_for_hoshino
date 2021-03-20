@@ -75,58 +75,58 @@ async def _addinfo(bot, ev: CQEvent, region: int):
   # 处理输入数据
   alltext = ev.message.extract_plain_text()
 
-  nametext = re.findall(r"20.+? ",alltext)
-  for username in nametext:
-    username = username.replace(' ','')
-    if len(username) == 10:
-      # print('username = ' + username)
-      msg1 = '\n学号 = ' + username
-      # await bot.send(ev, msg)
+  nametext_dir = re.findall(r" .*",alltext)
+  for name_dir in nametext_dir:
+    username = alltext.replace(name_dir,'')
+  # msg = username
+  # await bot.send(ev, msg)
+  if len(username) == 10:
+    # print('username = ' + username)
+    msg1 = '\n学号 = ' + username
+    # await bot.send(ev, msg)
 
-      passtext = re.findall(r" .+? ",alltext)
-      for password in passtext:
-        password = password.replace(' ','')
-      # print('password = ' + password)
-      msg2 = '\n密码 = ' + password
-      # await bot.send(ev, msg)
+    passtext = re.findall(r" .+? ",alltext)
+    for password in passtext:
+      password = password.replace(' ','')
+    # print('password = ' + password)
+    msg2 = '\n密码 = ' + password
+    # await bot.send(ev, msg)
 
-      qqtext = re.findall(r" .*",alltext)
-      for qq in qqtext:
-        pass_dir = password + ' '
-        qq = qq.replace(pass_dir,'')
-        qq = qq.replace(' ','')
-        email = qq + '@qq.com'
-      # print('qq = ' + qq)
-      msg3 = '\nQQ = ' + qq
-      # await bot.send(ev, msg)
+    qqtext = re.findall(r" .*",alltext)
+    for qq in qqtext:
+      pass_dir = password + ' '
+      qq = qq.replace(pass_dir,'')
+      qq = qq.replace(' ','')
+      email = qq + '@qq.com'
+    # print('qq = ' + qq)
+    msg3 = '\nQQ = ' + qq
+    # await bot.send(ev, msg)
 
-      msg = '正在添加您的信息：'
-      msg = msg + msg1 + msg2 + msg3
-      await bot.send(ev, msg)
-      
-      current_dir = os.path.join(os.path.dirname(__file__), 'config.yml')
-      file = open(current_dir, 'r', encoding="UTF-8")
-      file_data = file.read()
-      file.close()
-      config = yaml.load(file_data, Loader=yaml.FullLoader)
+    msg = '正在添加您的信息：'
+    msg = msg + msg1 + msg2 + msg3
+    await bot.send(ev, msg)
+    
+    current_dir = os.path.join(os.path.dirname(__file__), 'config.yml')
+    file = open(current_dir, 'r', encoding="UTF-8")
+    file_data = file.read()
+    file.close()
+    config = yaml.load(file_data, Loader=yaml.FullLoader)
 
-      data = {'user': {
-        'email': email, 
-        'location': location, 
-        'password': password, 
-        'username': username}}
+    data = {'user': {
+      'email': email, 
+      'location': location, 
+      'password': password, 
+      'username': username}}
 
-      config["users"].append(data)
+    config["users"].append(data)
 
-      with open(current_dir, "w", encoding="UTF-8") as f:
-          yaml.dump(config, f,allow_unicode=True)
-      msg = username + '的信息添加完成'
-      await bot.send(ev, msg)
-
-    else:
-      msg = '学号格式错误，请重新输入'
-      await bot.send(ev, msg)
-      break
+    with open(current_dir, "w", encoding="UTF-8") as f:
+        yaml.dump(config, f,allow_unicode=True)
+    msg = username + '的信息添加完成'
+    await bot.send(ev, msg)
+  else:
+    msg = '学号格式错误，请重新输入'
+    await bot.send(ev, msg)
 
 @sv.on_prefix('删除用户')
 async def delinfo(bot, ev):
