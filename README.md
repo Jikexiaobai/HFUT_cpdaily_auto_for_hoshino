@@ -1,0 +1,91 @@
+
+## 注意
+
+打卡脚本来自@RayAlto
+传送门：https://github.com/RayAlto/HFUT-cpdaily-auto
+
+本人将该脚本编写成HoshinoBot的插件，并在原来的基础上添加了邮件提醒和其他交互小功能，可实现在QQ群里管理所有信息和自动或手动打卡，然后去除了server酱功能
+
+## 代码比较冗杂，望见谅
+
+该插件适用于合肥工业大学，今日校园里的疫情信息收集，就是那个点开上面显示每日报平安的那个
+
+## 更新日志
+
+21-03-20    v1.0    first commit
+
+## HFUT_cpdaily_auto_for_hoshino
+
+一个适用hoshinobot的打卡插件
+
+本插件仅供学习研究使用，插件免费，请勿用于任何收费代挂，否则一切后果自己承担
+
+## 项目地址：
+https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
+
+## 功能
+
+命令&功能：
+
+[打卡帮助] 查看帮助
+
+[初始化] 初始化用户信息（仅限超级管理员）
+
+[添加用户 学号 密码 QQ] 添加新用户  (注意参照格式：添加用户 2018214233 xxxaaa 23332)
+
+[删除用户 学号] 删除信息（仅限超级管理员）
+
+[打卡] 今日校园手动打卡（仅限超级管理员）
+
+{自动打卡} 该功能无需命令，开启后每天14点15分自动完成
+
+[打卡用户列表] 看所有用户
+
+## 简单食用教程：
+
+可看下方链接（这个页面还没写）：
+
+https://www.594594.xyz/2020/11/19/HFUT_cpdaily_auto_for_hoshino/
+
+或本页面：
+
+1. git clone本插件：
+
+在 HoshinoBot\hoshino\modules 目录下使用以下命令拉取本项目
+```
+git clone https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
+```
+
+2. 安装依赖：
+
+到HoshinoBot\hoshino\modules\HFUT_cpdaily_auto_for_hoshino目录下，打开powershell运行
+```
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+3. 打开HFUT_cpdaily_auto_for_hoshino文件夹下的`__init__.py`文件，将最上方要填写的参数填好
+
+4. 在 HoshinoBot\hoshino\config\ `__bot__.py` 文件的 MODULES_ON 加入 'HFUT_cpdaily_auto_for_hoshino'
+
+然后重启 HoshinoBot即可使用
+
+5. 手动开启功能：（为了防止不需要的群误触）
+
+在某个群里发消息输入下文以开启该群的主功能（必须开）
+```
+开启 cpdaily-HFUT
+```
+在某个群里发消息输入下文以开启该群的初始化功能（必须开）
+```
+开启 cpdaily-HFUT-init
+```
+在某个群里发消息输入下文以开启自动打卡功能（想每天14点15分自动完成的开，注意该功能最多只能在一个群开启，否则会触发多个任务）
+```
+开启 cpdaily-HFUT-auto
+```
+
+可以通过发消息输入"lssv"查看这几个功能前面是不是⚪来确认是否开启成功
+
+6. 到一个开启cpdaily-HFUT-init功能的群里，直接发送'初始化'进行初始化，若无反应请看报错信息
+
+7. 初始化完成后就可以正常使用功能了，其他功能可以直接发送'打卡帮助'看
