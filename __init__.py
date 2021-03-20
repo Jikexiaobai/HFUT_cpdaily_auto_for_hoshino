@@ -29,7 +29,7 @@ server = 'smtp.163.com'
 owneremail = 'xxxxxxxxx@xxxx.com'
 # location位置，合工大的就不用改了
 location = '安徽省合肥市蜀山区'
-# 自己疫情信息收集的密码，尽量一次填对，错多了会有验证码就难搞了
+# 自己疫情信息收集的密码，尽量一次填对，错多了会有验证码就难搞了，登录密码应该是这个的密码 https://cas.hfut.edu.cn/cas/login
 ownerpassword = 'xxxxxxxxxx'
 # 自己的学号，十位数，别填错了
 ownerusername = '2333333333'
