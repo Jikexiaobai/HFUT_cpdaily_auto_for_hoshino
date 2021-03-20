@@ -47,7 +47,7 @@ https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 
 可看下方链接：
 
-https://www.594594.xyz/2020/11/19/HFUT_cpdaily_auto_for_hoshino/
+https://www.594594.xyz/2021/03/20/HFUT_cpdaily_auto_for_hoshino/
 
 或本页面：
 
