@@ -1,6 +1,8 @@
 
 ## 注意
 
+若其他学校同学需要可自行更改
+
 打卡脚本来自@RayAlto
 传送门：https://github.com/RayAlto/HFUT-cpdaily-auto
 
@@ -18,7 +20,7 @@
 
 一个适用hoshinobot的打卡插件
 
-本插件仅供学习研究使用，插件免费，请勿用于任何收费代挂，否则一切后果自己承担
+本插件仅供学习研究使用，插件免费，禁止用于任何收费代挂，否则一切后果自己承担
 
 ## 项目地址：
 https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
@@ -43,7 +45,7 @@ https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 
 ## 简单食用教程：
 
-可看下方链接（这个页面还没写）：
+可看下方链接：
 
 https://www.594594.xyz/2020/11/19/HFUT_cpdaily_auto_for_hoshino/
 
