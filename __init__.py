@@ -102,9 +102,14 @@ async def _addinfo(bot, ev: CQEvent, region: int):
     msg3 = '\nQQ = ' + qq
     # await bot.send(ev, msg)
 
+    self_id = ev.self_id
     msg = '正在添加您的信息：'
-    msg = msg + msg1 + msg2 + msg3
-    await bot.send(ev, msg)
+    msg4 = '\n请尽快确认您的信息，本消息将在五秒后撤回'
+    msg = msg + msg1 + msg2 + msg3 + msg4
+    msgback = await bot.send(ev, msg)
+    msg_id = msgback['message_id']
+    await asyncio.sleep(5)
+    await bot.delete_msg(self_id=self_id, message_id=msg_id)
     
     current_dir = os.path.join(os.path.dirname(__file__), 'config.yml')
     file = open(current_dir, 'r', encoding="UTF-8")
