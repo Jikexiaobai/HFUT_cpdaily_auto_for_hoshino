@@ -18,13 +18,6 @@ from email.utils import formataddr
 
 # 别问为什么这么多import，问就是能塞进来就塞
 
-# 创建全局session
-requestSession = requests.session()
-requestSession.headers.update({
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
-})
-
 # 读取yml配置
 def getYmlConfig() -> dict:
     current_dir = os.path.join(os.path.dirname(__file__), 'config.yml')
@@ -79,7 +72,7 @@ def encryptPassword(password: str, key: str) -> str:
     
     return encryptedPassword.decode('utf-8')
 
-def login(username: str, password: str) -> bool:
+def login(username: str, password: str, requestSession) -> bool:
     """Log in to cas of HFUT
     
     Try to log in with username and password. Login operation contains many jumps,
@@ -160,7 +153,7 @@ def login(username: str, password: str) -> bool:
     printLog('登录成功')
     return True
 
-def submit(location: str) -> bool:
+def submit(location: str, requestSession) -> bool:
     """Submit using specific location
     
     submit today's form based on the form submitted last time using specific loaction

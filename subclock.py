@@ -12,10 +12,15 @@ async def cpdailyHFUTauto():
     msg = '今日校园自动打卡系统：正在开始处理'
     await svsub.broadcast(msg, 'cpdaily-HFUT-auto', 0.2)
     for user in config['users']:
+        requestSession = requests.session()
+        requestSession.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+        })
         printLog(f'开始处理用户{user["user"]["username"]}')
         try:
             # login and submit
-            if login(user['user']['username'], user['user']['password']) and submit(user['user']['location']):
+            if login(user['user']['username'], user['user']['password'], requestSession) and submit(user['user']['location'], requestSession):
                 # succeed
                 printLog('当前用户处理成功')
                 # 下面的emailmsg邮件消息内容可随意更改
