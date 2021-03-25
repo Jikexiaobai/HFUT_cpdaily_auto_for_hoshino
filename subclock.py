@@ -46,10 +46,10 @@ async def cpdailyHFUTauto():
     来自(QQ:2047788491)优衣酱~的消息：
 
                       自动提交失败！
-    发生错误，原因未知，请联系维护组~
+    发生错误，可能的原因是不在填报时间范围内，请联系维护组~
                 '''
                 InfoSubmit(emailmsg, user['user']['email'])
-                msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，详情请联系维护组'
+                msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，可能的原因是不在填报时间范围内，详情请联系维护组'
                 await svsub.broadcast(msg, 'cpdaily-HFUT-auto', 0.2)
         except HTTPError as httpError:
             print(f'发生HTTP错误：{httpError}，终止当前用户的处理')
@@ -60,10 +60,10 @@ async def cpdailyHFUTauto():
     来自(QQ:2047788491)优衣酱~的消息：
 
                       自动提交失败！
-    发生HTTP错误，请联系维护组~
+    发生HTTP错误，可能的原因是您的密码错误，请联系维护组~
                 '''
             InfoSubmit(emailmsg, user['user']['email'])
-            msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，详情请联系维护组'
+            msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
             await svsub.broadcast(msg, 'cpdaily-HFUT-auto', 0.2)
             # process next user
             continue

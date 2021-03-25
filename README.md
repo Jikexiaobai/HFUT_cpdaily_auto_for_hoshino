@@ -14,6 +14,8 @@
 
 ## 更新日志
 
+21-03-25    v1.2    新增单独打卡仅限QQ号本人或者维护组，维护组QQ可以手动在`submain.py`最上面进行设置
+
 21-03-21    v1.1    新增单独打卡功能，新增自动撤回添加用户的确认消息功能，感谢群里的大佬们教我抄代码（
 
 21-03-20    v1.0    first commit
@@ -41,7 +43,7 @@ https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 
 [打卡] 今日校园全员手动打卡（仅限超级管理员）
 
-[单独打卡 2018xxxxxx] 单独为某人打卡
+[单独打卡 2018xxxxxx] 顾名思义
 
 {自动打卡} 该功能无需命令，开启后每天14点15分自动完成
 
@@ -69,7 +71,7 @@ git clone https://github.com/azmiao/HFUT_cpdaily_auto_for_hoshino
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-3. 打开HFUT_cpdaily_auto_for_hoshino文件夹下的`__init__.py`文件，将最上方要填写的参数填好
+3. 打开HFUT_cpdaily_auto_for_hoshino文件夹下的`__init__.py`文件，将最上方要填写的参数填好。然后在`submain.py`最上面进行设置超级管理员QQ
 
 4. 在 HoshinoBot\hoshino\config\ `__bot__.py` 文件的 MODULES_ON 加入 'HFUT_cpdaily_auto_for_hoshino'
 

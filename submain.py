@@ -5,6 +5,8 @@ from hoshino import Service, R, priv
 from hoshino.typing import *
 from .submit import *
 
+superqq = 23333333 #超级管理员QQ
+
 sv_help = '''
 =====命令=====
 注意：[]内为指令，外为改指令实现的功能
@@ -37,7 +39,7 @@ async def help(bot, ev):
 @sv.on_fullmatch(('打卡','今日校园打卡'))
 async def cpdailyHFUT(bot, ev):
     if not priv.check_priv(ev, priv.SUPERUSER):
-        msg = '很抱歉您没有权限进行全员打卡，该操作仅限维护组。若需要单独打卡请输入“打卡 2018xxxxxx”'
+        msg = '很抱歉您没有权限进行全员打卡，该操作仅限维护组。若需要单独打卡请输入“单独打卡 2018xxxxxx”'
         await bot.send(ev, msg)
         return
     config = getYmlConfig()
@@ -63,7 +65,7 @@ async def cpdailyHFUT(bot, ev):
 
     来自优衣酱~的消息：
 
-                      自动提交成功！
+                      手动提交成功！
                 '''
                 InfoSubmit(emailmsg, user['user']['email'])
                 msg = '已为'+ f'{user["user"]["username"]}' + '完成提交'
@@ -78,11 +80,11 @@ async def cpdailyHFUT(bot, ev):
 
     来自优衣酱~的消息：
 
-                      自动提交失败！
-    原因未知，请联系维护组或自己手动打卡~
+                      手动提交失败！
+    原因未知，可能的原因是不在填报时间范围内，请联系维护组~
                 '''
                 InfoSubmit(emailmsg, user['user']['email'])
-                msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，详情请联系维护组'
+                msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，可能的原因是不在填报时间范围内，详情请联系维护组'
                 await bot.send(ev, msg)
         except HTTPError as httpError:
             print(f'发生HTTP错误：{httpError}，终止当前用户的处理')
@@ -92,11 +94,11 @@ async def cpdailyHFUT(bot, ev):
 
     来自优衣酱~的消息：
 
-                      自动提交失败！
-    发生HTTP错误，可能的原因是您已经打卡过了，若仍有问题请联系维护组或自己去今日校园查看确认一下~
+                      手动提交失败！
+    发生HTTP错误，可能的原因是您的密码错误，详情请联系维护组~
                 '''
             InfoSubmit(emailmsg, user['user']['email'])
-            msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，详情请联系维护组'
+            msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
             await bot.send(ev, msg)
             # process next user
             continue
@@ -111,73 +113,80 @@ async def onlyinfo(bot, ev):
 
 # 单独用户打卡
 async def _onlyinfo(bot, ev: CQEvent, region: int):
-  # 处理输入数据
-  textname = ev.message.extract_plain_text()
-  config = getYmlConfig()
-  setnum = 0
-  for user in config['users']:
-    requestSession = requests.session()
-    requestSession.headers.update({
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
-    })
-    if user['user']['username'] == str(textname):
-      # print(user['user']['username'])
-      msg = '正在为' + textname + '单独打卡'
-      await bot.send(ev, msg)
-      try:
-          # login and submit
-          if login(user['user']['username'], user['user']['password'], requestSession) and submit(user['user']['location'], requestSession):
-              # succeed
-              printLog('当前用户处理成功')
-              # 下面的emailmsg邮件消息内容可随意更改
-              emailmsg = '''
+    # 处理输入数据
+    textname = ev.message.extract_plain_text()
+    config = getYmlConfig()
+    uid = ev.user_id
+    setnum = 0
+    for user in config['users']:
+        requestSession = requests.session()
+        requestSession.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+        })
+        if user['user']['username'] == str(textname):
+            qq = user['user']['email'].replace('@qq.com','')
+            if int(qq) == uid or uid == superqq:
+                # print(user['user']['username'])
+                msg = '正在为' + textname + '单独打卡'
+                await bot.send(ev, msg)
+                try:
+                    # login and submit
+                    if login(user['user']['username'], user['user']['password'], requestSession) and submit(user['user']['location'], requestSession):
+                        # succeed
+                        printLog('当前用户处理成功')
+                        # 下面的emailmsg邮件消息内容可随意更改
+                        emailmsg = '''
 
 你好：
 
     来自(QQ:2047788491)优衣酱~的消息：
 
-                      自动提交成功！
+                      手动提交成功！
                 '''
-              InfoSubmit(emailmsg, user['user']['email'])
-              msg = '已为'+ f'{user["user"]["username"]}' + '完成提交'
-              await bot.send(ev, msg)
-          else:
-              # failed
-              printLog('发生错误，终止当前用户的处理')
-              # 下面的emailmsg邮件消息内容可随意更改
-              emailmsg = '''
+                        InfoSubmit(emailmsg, user['user']['email'])
+                        msg = '已为'+ f'{user["user"]["username"]}' + '完成提交'
+                        await bot.send(ev, msg)
+                    else:
+                        # failed
+                        printLog('发生错误，终止当前用户的处理')
+                        # 下面的emailmsg邮件消息内容可随意更改
+                        emailmsg = '''
 
 你好：
 
     来自(QQ:2047788491)优衣酱~的消息：
 
-                      自动提交失败！
-    发生错误，原因未知，请联系维护组~
+                      手动提交失败！
+    发生错误，可能的原因是不在填报时间范围内，请联系维护组~
                 '''
-              InfoSubmit(emailmsg, user['user']['email'])
-              msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，详情请联系维护组'
-              await bot.send(ev, msg)
-      except HTTPError as httpError:
-          print(f'发生HTTP错误：{httpError}，终止当前用户的处理')
-          emailmsg = '''
+                        InfoSubmit(emailmsg, user['user']['email'])
+                        msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，可能的原因是不在填报时间范围内，详情请联系维护组'
+                        await bot.send(ev, msg)
+                except HTTPError as httpError:
+                    print(f'发生HTTP错误：{httpError}，终止当前用户的处理')
+                    emailmsg = '''
 
 你好：
 
     来自(QQ:2047788491)优衣酱~的消息：
 
-                      自动提交失败！
-    发生HTTP错误，请联系维护组~
+                      手动提交失败！
+    发生HTTP错误，可能的原因是您的密码错误，请联系维护组~
                 '''
-          InfoSubmit(emailmsg, user['user']['email'])
-          msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，详情请联系维护组'
-          await bot.send(ev, msg)
-          # process next user
-          continue
+                    InfoSubmit(emailmsg, user['user']['email'])
+                    msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
+                    await bot.send(ev, msg)
+                    # process next user
+                    continue
+            else:
+                msg = '您不是该学号本人或维护组。为了安全起见，无法代人手动打卡！如需代打卡请联系维护组'
+                await bot.send(ev, msg)
+                return
 
-      msg = textname + '单独打卡成功，详情请关注邮件'
-      await bot.send(ev, msg)
-      setnum = 1
-  if setnum == 0:
-    msg = '未找到此用户'
-    await bot.send(ev, msg)
+            msg = textname + '单独打卡成功，详情请关注邮件'
+            await bot.send(ev, msg)
+            setnum = 1
+    if setnum == 0:
+        msg = '未找到此用户'
+        await bot.send(ev, msg)
