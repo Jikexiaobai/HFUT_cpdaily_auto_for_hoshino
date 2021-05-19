@@ -40,7 +40,7 @@ ownerusername = '2333333333'
 sv = Service('cpdaily-HFUT-init', enable_on_default=False, bundle='打卡初始化')
 
 # 创建config.yml文件并初始化基础信息
-@sv.on_fullmatch("初始化")
+@sv.on_fullmatch("今日校园初始化")
 async def createinfo(bot, ev):
   if not priv.check_priv(ev, priv.SUPERUSER):
     msg = '很抱歉您没有权限进行此操作，该操作仅限维护组'

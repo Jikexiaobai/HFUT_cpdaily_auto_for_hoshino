@@ -14,14 +14,14 @@ sv_help = '''
 自动打卡无需命令，14.15自动打卡
 ==============
 
-[初始化] 初始化（限维护组）
+[今日校园初始化] 初始化（限维护组）
 
 [添加用户 学号 密码 QQ] 添加新用户
 (格式:添加用户 2018214233 233 2333)
 
 [删除用户 学号] 删除信息（限维护组）
 
-[打卡] 全员手动打卡（限维护组）
+[全员打卡] 全员手动打卡（限维护组）
 
 [单独打卡 2018xxxxxx] 顾名思义
 
@@ -36,7 +36,7 @@ async def help(bot, ev):
     await bot.send(ev, sv_help)
 
 #手动打卡功能
-@sv.on_fullmatch(('打卡','今日校园打卡'))
+@sv.on_fullmatch(('全员打卡','今日校园打卡'))
 async def cpdailyHFUT(bot, ev):
     if not priv.check_priv(ev, priv.SUPERUSER):
         msg = '很抱歉您没有权限进行全员打卡，该操作仅限维护组。若需要单独打卡请输入“单独打卡 2018xxxxxx”'
@@ -46,6 +46,7 @@ async def cpdailyHFUT(bot, ev):
     bot = hoshino.get_bot()
     msg = '今日校园打卡系统（手动模式）：正在开始处理'
     await bot.send(ev, msg)
+    msg = '以下为详细信息：'
     for user in config['users']:
         requestSession = requests.session()
         requestSession.headers.update({
@@ -68,8 +69,8 @@ async def cpdailyHFUT(bot, ev):
                       手动提交成功！
                 '''
                 InfoSubmit(emailmsg, user['user']['email'])
-                msg = '已为'+ f'{user["user"]["username"]}' + '完成提交'
-                await bot.send(ev, msg)
+                msg = msg + '\n已为'+ f'{user["user"]["username"]}' + '完成提交'
+                # await bot.send(ev, msg)
             else:
                 # failed
                 printLog('发生错误，终止当前用户的处理')
@@ -84,8 +85,8 @@ async def cpdailyHFUT(bot, ev):
     原因未知，可能的原因是不在填报时间范围内，请联系维护组~
                 '''
                 InfoSubmit(emailmsg, user['user']['email'])
-                msg = '发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，可能的原因是不在填报时间范围内，详情请联系维护组'
-                await bot.send(ev, msg)
+                msg = msg + '\n发生错误，错误用户为'+ f'{user["user"]["username"]}' + '，可能的原因是不在填报时间范围内，详情请联系维护组'
+                # await bot.send(ev, msg)
         except HTTPError as httpError:
             print(f'发生HTTP错误：{httpError}，终止当前用户的处理')
             emailmsg = '''
@@ -98,11 +99,12 @@ async def cpdailyHFUT(bot, ev):
     发生HTTP错误，可能的原因是您的密码错误，详情请联系维护组~
                 '''
             InfoSubmit(emailmsg, user['user']['email'])
-            msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
-            await bot.send(ev, msg)
+            msg = msg + '\n发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
+            # await bot.send(ev, msg)
             # process next user
             continue
 
+    await bot.send(ev, msg)
     printLog('所有用户处理结束')
     msg = '今天是' + str(get_time()) + get_week_day(get_time()) + '\n所有用户手动处理结束，今日校园打卡结果已出，详情请关注邮件'
     await bot.send(ev, msg)
@@ -126,7 +128,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
         })
         if user['user']['username'] == str(textname):
             qq = user['user']['email'].replace('@qq.com','')
-            if int(qq) == uid or uid == superqq:
+            if int(qq) == uid or uid == int(superqq):
                 # print(user['user']['username'])
                 msg = '正在为' + textname + '单独打卡'
                 await bot.send(ev, msg)
@@ -140,7 +142,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
 
 你好：
 
-    来自(QQ:2047788491)优衣酱~的消息：
+    来自优衣酱~的消息：
 
                       手动提交成功！
                 '''
@@ -155,7 +157,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
 
 你好：
 
-    来自(QQ:2047788491)优衣酱~的消息：
+    来自优衣酱~的消息：
 
                       手动提交失败！
     发生错误，可能的原因是不在填报时间范围内，请联系维护组~
@@ -169,7 +171,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
 
 你好：
 
-    来自(QQ:2047788491)优衣酱~的消息：
+    来自优衣酱~的消息：
 
                       手动提交失败！
     发生HTTP错误，可能的原因是您的密码错误，请联系维护组~
