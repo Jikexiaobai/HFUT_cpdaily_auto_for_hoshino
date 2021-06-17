@@ -127,6 +127,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
         })
         if user['user']['username'] == str(textname):
+            setnum = 1
             qq = user['user']['email'].replace('@qq.com','')
             if int(qq) == uid or uid == int(superqq):
                 # print(user['user']['username'])
@@ -179,8 +180,6 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
                     InfoSubmit(emailmsg, user['user']['email'])
                     msg = '发生HTTP错误，已停止用户'+ f'{user["user"]["username"]}' + '的提交，可能的原因是您的密码错误，详情请联系维护组'
                     await bot.send(ev, msg)
-                    # process next user
-                    continue
             else:
                 msg = '您不是该学号本人或维护组。为了安全起见，无法代人手动打卡！如需代打卡请联系维护组'
                 await bot.send(ev, msg)
@@ -188,7 +187,7 @@ async def _onlyinfo(bot, ev: CQEvent, region: int):
 
             msg = textname + '单独打卡成功，详情请关注邮件'
             await bot.send(ev, msg)
-            setnum = 1
+            
     if setnum == 0:
         msg = '未找到此用户'
         await bot.send(ev, msg)
